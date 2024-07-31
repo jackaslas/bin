@@ -1,43 +1,56 @@
 #include<stdio.h>
- 
-int max(int a, int b) { return (a > b)? a : b; }
- 
-int knapSack(int W, int wt[], int val[], int n)
-{
-   int i, w;
-   int K[n+1][W+1];
- 
-   for (i = 0; i <= n; i++)
-   {
-       for (w = 0; w <= W; w++)
-       {
-           if (i==0 || w==0)
-               K[i][w] = 0;
-           else if (wt[i-1] <= w)
-                 K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]);
-           else
-                 K[i][w] = K[i-1][w];
-       }
-   }
- 
-   return K[n][W];
-}
- 
+#include<stdlib.h>
 int main()
 {
-    int i, n, val[20], wt[20], W;
-    
-    printf("Enter number of objects:");
-    scanf("%d", &n);
-    
-    printf("Enter profit and weight of items:\n");
-    for(i = 0;i < n; ++i){
-    	scanf("%d%d", &val[i], &wt[i]);
-    }
-
-    printf("Enter capacity of knapsack:");
-    scanf("%d", &W);
-    
-    printf("The maximum profit is = %d\n", knapSack(W, wt, val, n));
-    return 0;
+int weight[20],profit[20],v[20][20];
+int n,i,j,m,val1,val2;
+printf("Enter the number of object\n");
+scanf("%d",&n);
+printf("Enter the weight of each object\n");
+for(i=1;i<=n;i++)
+{
+scanf("%d",&weight[i]);
+}
+printf("Enter the profit for each object\n");
+for(i=1;i<=n;i++)
+{
+scanf("%d",&profit[i]);
+}
+printf("Enter the knapsack capacity\n");
+scanf("%d",&m);
+for(i=0;i<=n;i++)
+{
+for(j=0;j<=m;j++)
+{
+if(i==0||j==0)
+v[i][j]=0;
+}
+}
+for(i=1;i<=n;i++)
+{
+for(j=1;j<=m;j++)
+{
+if(weight[i]>j)
+v[i][j]=v[i-1][j];
+else
+{
+val1=(v[i-1][j]);
+val2=(v[i-1][j-weight[i]]+profit[i]);
+if(val1>val2)
+v[i][j]=val1;
+else
+v[i][j]=val2;
+}
+}
+}
+printf("The resultant matrix is\n");
+for(i=0;i<=n;i++)
+{
+for(j=0;j<=m;j++)
+{
+printf("%d\t",v[i][j]);
+}
+printf("\n");
+}
+printf("the max profit is %d\n",v[n][m]);
 }
